@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  }  
+}

@@ -1,10 +1,12 @@
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom";
+import "./Login.css"
 
 const Login = ({ setToken }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -21,31 +23,57 @@ const Login = ({ setToken }) => {
             navigate("/");
         } catch (error) {
             console.error("Login error:", error.response?.data || error.message);
-            alert(error.response?.data?.message || "Login failed");
+            setError(error.response?.data?.message || "Login failed");
         }
     };
 
     return (
-        <div>
-          <h2>Login</h2>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Email"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button type="submit">Login</button>
-          </form>
-          <p>Don't have an account? <Link to="/register">Register here</Link></p>
+        <div className="login-container">
+            <div className="login-form-container">
+                <h2 className="login-title">Login</h2>
+
+                {error && (
+                    <div className="error-message">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="login-form">
+                    <div>
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="login-input"
+                            autoFocus
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="login-input"
+                        />
+                    </div>
+                    <button type="submit" className="login-button">
+                        Login
+                    </button>
+                </form>
+
+                <p className="register-link">
+                    Don't have an account?{' '}
+                    <Link to="/register">
+                        Register here
+                    </Link>
+                </p>
+            </div>
         </div>
-      );
+    );
 };
 
 export default Login;

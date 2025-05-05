@@ -7,6 +7,7 @@ import Summary from "../components/Summary";
 import ChartComponent from "../components/ChartComponent";
 
 import { useNavigate } from "react-router-dom";
+import "./Dashboard.css"
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -17,6 +18,12 @@ const Dashboard = () => {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        navigate("/login");
+    };
+
     const fetchSummary = () => {
         axios.get(`http://localhost:5000/summary/monthly/${userId}`, {
             headers: {
@@ -26,17 +33,27 @@ const Dashboard = () => {
             .then((response) => {
                 setSummaryData(response.data || { totalIncome: 0, maaser: 0, totalTzedaka: 0, balance: 0 });
                 setLoading(false);
+                setError(""); // Clear any previous errors
             })
             .catch((error) => {
                 console.error("Error fetching summary:", error);
+                
+                // Handle token expiration specifically
+                if (error.response?.data?.code === "TOKEN_EXPIRED") {
+                    setError("Your session has expired. Please log in again.");
+                    handleLogout();
+                    return;
+                }
+
+                // Handle other authentication errors
+                if (error.response?.status === 401) {
+                    setError("Authentication error. Please log in again.");
+                    handleLogout();
+                    return;
+                }
+
                 setError("Failed to fetch summary. Please try again later.");
                 setLoading(false);
-
-                if (error.response && error.response.status === 401) {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("userId");
-                    navigate("/login");
-                }
             });
     };
 
@@ -48,29 +65,46 @@ const Dashboard = () => {
         fetchSummary();
     }, [navigate, token, userId]);
 
-
-    if (loading) return <p>Loading dashboard...</p>;
-    if (error && !summaryData) return <p>{error}</p>;
+    if (loading) return (
+        <div className="loading-container">
+            Loading dashboard...
+        </div>
+    );
 
     return (
-        <div>
-            <h1>Dashboard</h1>
-            {/* Forms to Insert Data */}
-            <IncomeForm onSuccess={fetchSummary} />
-            <TzedakaForm onSuccess={fetchSummary} />
+        <div className="dashboard-container">
+            <div className="dashboard-header">
+                <h1 className="dashboard-title">Dashboard</h1>
+                <button 
+                    onClick={handleLogout}
+                    className="logout-button"
+                >
+                    Logout
+                </button>
+            </div>
 
-            {/* Summary Data */}
-            <Summary data={summaryData} />
+            {error && (
+                <div className="error-message">
+                    {error}
+                </div>
+            )}
 
-            {/* Chart */}
-            <ChartComponent data={summaryData} />
+            <div className="forms-grid">
+                <div className="form-card">
+                    <IncomeForm onSuccess={fetchSummary} />
+                </div>
+                <div className="form-card">
+                    <TzedakaForm onSuccess={fetchSummary} />
+                </div>
+            </div>
 
-            {/* Logout */}
-            <button onClick={() => {
-                localStorage.removeItem("token");
-                localStorage.removeItem("userId");
-                navigate("/login");
-            }}>Logout</button>
+            <div className="form-card">
+                <Summary data={summaryData} />
+            </div>
+
+            <div className="form-card">
+                <ChartComponent data={summaryData} />
+            </div>
         </div>
     );
 };

@@ -4,7 +4,7 @@ module.exports = function (req, res, next) {
     const token = req.header("Authorization");
     if (!token)
         return res.status(401).json({
-            message: "Access denied"
+            message: "Access denied - No token provided"
         });
 
     try {
@@ -12,9 +12,15 @@ module.exports = function (req, res, next) {
         req.user = verified;
         next();
     } catch(err) {
-        res.status(400).json({
-            message: "Invalid token"
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                message: "Token expired",
+                code: "TOKEN_EXPIRED"
+            });
+        }
+        return res.status(401).json({
+            message: "Invalid token",
+            code: "INVALID_TOKEN"
         });
     }
-
 }

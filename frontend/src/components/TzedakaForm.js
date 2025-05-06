@@ -1,6 +1,6 @@
 import { useState } from "react"
 import axios from "axios"
-import "./TzedakaForm.css"
+import "../styles/TzedakaForm.css"
 
 const TzedakaForm = ({ onSuccess }) => {
     const [organization, setOrganization] = useState("");

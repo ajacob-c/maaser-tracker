@@ -1,6 +1,6 @@
 import { useState } from "react"
 import axios from "axios"
-import "./IncomeForm.css"
+import "../styles/IncomeForm.css"
 
 const IncomeForm = ({ onSuccess }) => {
     const [source, setSource] = useState("");

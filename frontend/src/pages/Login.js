@@ -1,7 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom";
-import "./Login.css"
+import "../styles/Login.css"
 
 const Login = ({ setToken }) => {
     const [email, setEmail] = useState("");
@@ -29,8 +29,8 @@ const Login = ({ setToken }) => {
 
     return (
         <div className="login-container">
-            <div className="login-form-container">
-                <h2 className="login-title">Login</h2>
+            <div className="login-form-container panel">
+                <h2 className="login-title form-title">Login</h2>
 
                 {error && (
                     <div className="error-message">
@@ -38,29 +38,28 @@ const Login = ({ setToken }) => {
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="login-form">
-                    <div>
+                <form onSubmit={handleSubmit} className="login-form form-container">
+                    <div className="form-group">
+                        <label className="form-label">Email</label>
                         <input
                             type="email"
-                            placeholder="Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="login-input"
-                            autoFocus
+                            className="form-input"
                         />
                     </div>
-                    <div>
+                    <div className="form-group">
+                        <label className="form-label">Password</label>
                         <input
                             type="password"
-                            placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="login-input"
+                            className="form-input"
                         />
                     </div>
-                    <button type="submit" className="login-button">
+                    <button type="submit" className="submit-button">
                         Login
                     </button>
                 </form>

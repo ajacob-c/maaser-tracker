@@ -7,7 +7,7 @@ import Summary from "../components/Summary";
 import ChartComponent from "../components/ChartComponent";
 
 import { useNavigate } from "react-router-dom";
-import "./Dashboard.css"
+import "../styles/Dashboard.css"
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -73,12 +73,9 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
-            <div className="dashboard-header">
+            <div className="dashboard-header panel">
                 <h1 className="dashboard-title">Dashboard</h1>
-                <button 
-                    onClick={handleLogout}
-                    className="logout-button"
-                >
+                <button onClick={handleLogout} className="submit-button logout-button">
                     Logout
                 </button>
             </div>
@@ -90,19 +87,23 @@ const Dashboard = () => {
             )}
 
             <div className="forms-grid">
-                <div className="form-card">
-                    <IncomeForm onSuccess={fetchSummary} />
+                <div className="panel form-panel">
+                    <IncomeForm />
                 </div>
-                <div className="form-card">
-                    <TzedakaForm onSuccess={fetchSummary} />
+                <div className="panel form-panel">
+                    <TzedakaForm />
                 </div>
             </div>
 
-            <div className="form-card">
+            {loading ? (
+                <div className="loading-container">
+                    Loading...
+                </div>
+            ) : (
                 <Summary data={summaryData} />
-            </div>
+            )}
 
-            <div className="form-card">
+            <div className="form-panel">
                 <ChartComponent data={summaryData} />
             </div>
         </div>

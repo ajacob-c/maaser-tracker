@@ -38,7 +38,7 @@ const IncomeForm = ({ onSuccess }) => {
 
     return (
         <div className="income-form">
-            <h2>Add Income</h2>
+            <h3>Add Income</h3>
             
             <form onSubmit={handleSubmit}>
                 <div className="form-group">

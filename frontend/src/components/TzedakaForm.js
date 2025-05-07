@@ -38,7 +38,7 @@ const TzedakaForm = ({ onSuccess }) => {
 
     return (
         <div className="tzedaka-form">
-            <h2>Add Tzedaka</h2>
+            <h3>Add Tzedaka</h3>
             
             <form onSubmit={handleSubmit}>
                 <div className="form-group">

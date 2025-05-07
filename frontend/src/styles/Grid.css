@@ -1,0 +1,138 @@
+.grid-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.grid-container h2 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.data-grid {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    border: 2px solid #dee2e6;
+    table-layout: fixed;
+}
+
+.data-grid th,
+.data-grid td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid #e9ecef;
+}
+
+.data-grid th {
+    background-color: #e9ecef;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Column widths for combined grid */
+.data-grid th:nth-child(1) { width: 10%; }  /* Month */
+.data-grid th:nth-child(2) { width: 10%; }  /* Total Income */
+.data-grid th:nth-child(3) { width: 35%; }  /* Income Details */
+.data-grid th:nth-child(4) { width: 10%; }  /* Total Tzedaka */
+.data-grid th:nth-child(5) { width: 35%; }  /* Tzedaka Details */
+
+/* Thicker vertical borders between specific columns */
+.data-grid th:nth-child(2),
+.data-grid td:nth-child(2) {
+    border-left: 2px solid #dee2e6;
+}
+
+.data-grid th:nth-child(4),
+.data-grid td:nth-child(4) {
+    border-left: 2px solid #dee2e6;
+}
+
+/* Month column styling */
+.data-grid th:first-child,
+.data-grid td:first-child {
+    background-color: #e7f5ff;
+    font-weight: 500;
+}
+
+.data-grid tr:hover td:first-child {
+    background-color: #d0ebff;
+}
+
+/* Alternating row colors */
+.data-grid tr.yearly-row:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.data-grid tr.yearly-row:nth-child(odd) {
+    background-color: white;
+}
+
+.data-grid tr:hover {
+    background-color: #f1f3f5 !important;
+}
+
+/* Yearly view specific styles */
+.data-grid tr.yearly-row {
+    height: 50px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.data-grid tr.yearly-row td {
+    vertical-align: top;
+    padding: 0.75rem;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.details-cell {
+    padding: 0.75rem !important;
+    height: 100%;
+}
+
+.nested-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+    background-color: white;
+    border: 1px solid #dee2e6;
+}
+
+.nested-table th,
+.nested-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border: 1px solid #e9ecef;
+}
+
+.nested-table th {
+    background-color: #f8f9fa;
+    font-weight: 500;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.nested-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.loading {
+    text-align: center;
+    padding: 1rem;
+    color: #6c757d;
+}
+
+.error {
+    color: #dc3545;
+    padding: 1rem;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+} 

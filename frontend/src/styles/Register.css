@@ -16,6 +16,8 @@
 
 .register-title {
     text-align: center;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
 }
 
 .register-form {
@@ -67,12 +69,13 @@
     margin-top: 1.5rem;
     text-align: center;
     color: var(--text-muted);
+    font-family: var(--font-family);
 }
 
 .login-link a {
     color: var(--primary-color);
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .login-link a:hover {

@@ -1,5 +1,7 @@
+@import './common.css';
+
 .grid-container {
-    background-color: white;
+    background-color: var(--white);
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -8,7 +10,7 @@
 }
 
 .grid-container h2 {
-    color: #2c3e50;
+    color: var(--text-color);
     margin-top: 0;
     margin-bottom: 1rem;
     font-size: 1.5rem;
@@ -18,7 +20,7 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
-    border: 2px solid #dee2e6;
+    border: 2px solid var(--border-color);
     table-layout: fixed;
 }
 
@@ -26,14 +28,14 @@
 .data-grid td {
     padding: 0.75rem;
     text-align: left;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
 }
 
 .data-grid th {
-    background-color: #e9ecef;
+    background-color: var(--bg-color);
     font-weight: 600;
-    color: #495057;
-    border-bottom: 2px solid #dee2e6;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border-color);
 }
 
 /* Column widths for combined grid */
@@ -46,48 +48,48 @@
 /* Thicker vertical borders between specific columns */
 .data-grid th:nth-child(2),
 .data-grid td:nth-child(2) {
-    border-left: 2px solid #dee2e6;
+    border-left: 2px solid var(--border-color);
 }
 
 .data-grid th:nth-child(4),
 .data-grid td:nth-child(4) {
-    border-left: 2px solid #dee2e6;
+    border-left: 2px solid var(--border-color);
 }
 
 /* Month column styling */
 .data-grid th:first-child,
 .data-grid td:first-child {
-    background-color: #e7f5ff;
+    background-color: var(--hover-bg);
     font-weight: 500;
 }
 
 .data-grid tr:hover td:first-child {
-    background-color: #d0ebff;
+    background-color: var(--active-bg);
 }
 
 /* Alternating row colors */
 .data-grid tr.yearly-row:nth-child(even) {
-    background-color: #f8f9fa;
+    background-color: var(--bg-color);
 }
 
 .data-grid tr.yearly-row:nth-child(odd) {
-    background-color: white;
+    background-color: var(--white);
 }
 
 .data-grid tr:hover {
-    background-color: #f1f3f5 !important;
+    background-color: var(--hover-bg) !important;
 }
 
 /* Yearly view specific styles */
 .data-grid tr.yearly-row {
     height: 50px;
-    border-bottom: 2px solid #dee2e6;
+    border-bottom: 2px solid var(--border-color);
 }
 
 .data-grid tr.yearly-row td {
     vertical-align: top;
     padding: 0.75rem;
-    border-bottom: 2px solid #dee2e6;
+    border-bottom: 2px solid var(--border-color);
 }
 
 .details-cell {
@@ -100,39 +102,39 @@
     border-collapse: collapse;
     font-size: 0.9rem;
     margin: 0.5rem 0;
-    background-color: white;
-    border: 1px solid #dee2e6;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
 }
 
 .nested-table th,
 .nested-table td {
     padding: 0.5rem;
     text-align: left;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
 }
 
 .nested-table th {
-    background-color: #f8f9fa;
+    background-color: var(--bg-color);
     font-weight: 500;
-    color: #495057;
-    border-bottom: 2px solid #dee2e6;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border-color);
 }
 
 .nested-table tr:hover {
-    background-color: #f8f9fa;
+    background-color: var(--hover-bg);
 }
 
 .loading {
     text-align: center;
     padding: 1rem;
-    color: #6c757d;
+    color: var(--text-muted);
 }
 
 .error {
-    color: #dc3545;
+    color: var(--error-text);
     padding: 1rem;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+    background-color: var(--error-bg);
+    border: 1px solid var(--error-border);
     border-radius: 4px;
     margin-bottom: 1rem;
 } 

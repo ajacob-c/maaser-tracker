@@ -47,6 +47,7 @@ const Dashboard = () => {
                     maaser: 0, 
                     totalTzedaka: 0, 
                     balance: 0,
+                    netIncome: 0,
                     monthlyBreakdown: [] 
                 });
                 setLoading(false);

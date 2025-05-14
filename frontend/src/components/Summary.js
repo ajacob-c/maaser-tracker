@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import '../styles/Summary.css';
 
 const Summary = ({ data, onMonthChange }) => {
     const fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
@@ -43,6 +44,13 @@ const Summary = ({ data, onMonthChange }) => {
         onMonthChange(selectedDate, newIsYearlyView);
     };
 
+    // Update selectedDate when data changes
+    useEffect(() => {
+        if (data && data.date) {
+            setSelectedDate(new Date(data.date));
+        }
+    }, [data]);
+
     if (!data) return (
         <p style={{ 
             color: '#666',
@@ -61,13 +69,8 @@ const Summary = ({ data, onMonthChange }) => {
           selectedDate.getFullYear() === new Date().getFullYear();
 
     return (
-        <div style={{ fontFamily }}>
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '1.5rem'
-            }}>
+        <div className="summary-container" style={{ fontFamily }}>
+            <div className="summary-header">
                 <h2 style={{
                     color: '#2c3e50',
                     fontSize: '1.5rem',
@@ -77,60 +80,20 @@ const Summary = ({ data, onMonthChange }) => {
                     {isYearlyView ? 'Yearly' : 'Monthly'} Summary - {isYearlyView ? year : `${month} ${year}`}
                 </h2>
                 
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem'
-                }}>
+                <div className="date-navigation">
                     <button
                         onClick={() => handleYearChange(-1)}
-                        style={{
-                            padding: '0.5rem',
-                            border: '1px solid #ced4da',
-                            borderRadius: '4px',
-                            background: 'white',
-                            cursor: 'pointer',
-                            fontSize: '1rem',
-                            color: '#495057'
-                        }}
+                        className="nav-button year-button"
                     >
                         &lt;&lt;
                     </button>
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        background: 'white',
-                        padding: '0.5rem',
-                        border: '1px solid #ced4da',
-                        borderRadius: '4px'
-                    }}>
+                    <div className="date-display">
                         <button
                             onClick={() => handleMonthIncrement(-1)}
-                            style={{
-                                padding: '0.25rem 0.5rem',
-                                border: '1px solid #4a90e2',
-                                borderRadius: '4px',
-                                background: '#4a90e2',
-                                cursor: 'pointer',
-                                fontSize: '1rem',
-                                color: 'white',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                minWidth: '32px',
-                                transition: 'all 0.2s ease'
-                            }}
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.backgroundColor = '#357abd';
-                                e.currentTarget.style.borderColor = '#357abd';
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.backgroundColor = '#4a90e2';
-                                e.currentTarget.style.borderColor = '#4a90e2';
-                            }}
+                            className="nav-button year-button"
+                            style={{ display: isYearlyView ? 'none' : 'block' }}
                         >
-                            ←
+                            &lt;
                         </button>
                         {!isYearlyView && (
                             <select
@@ -161,178 +124,66 @@ const Summary = ({ data, onMonthChange }) => {
                         )}
                         <button
                             onClick={() => handleMonthIncrement(1)}
-                            style={{
-                                padding: '0.25rem 0.5rem',
-                                border: '1px solid #4a90e2',
-                                borderRadius: '4px',
-                                background: '#4a90e2',
-                                cursor: 'pointer',
-                                fontSize: '1rem',
-                                color: 'white',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                minWidth: '32px',
-                                transition: 'all 0.2s ease'
-                            }}
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.backgroundColor = '#357abd';
-                                e.currentTarget.style.borderColor = '#357abd';
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.backgroundColor = '#4a90e2';
-                                e.currentTarget.style.borderColor = '#4a90e2';
-                            }}
+                            className="nav-button year-button"
+                            style={{ display: isYearlyView ? 'none' : 'block' }}
                         >
-                            →
+                            &gt;
                         </button>
                         <span style={{
                             fontSize: '1rem',
                             color: '#495057',
                             fontWeight: '500',
-                            paddingLeft: '0.5rem',
-                            borderLeft: '1px solid #ced4da'
+                            paddingLeft: isYearlyView ? '0' : '0.5rem',
+                            borderLeft: isYearlyView ? 'none' : '1px solid #ced4da'
                         }}>
                             {year}
                         </span>
                     </div>
                     <button
                         onClick={() => handleYearChange(1)}
-                        style={{
-                            padding: '0.5rem',
-                            border: '1px solid #ced4da',
-                            borderRadius: '4px',
-                            background: 'white',
-                            cursor: 'pointer',
-                            fontSize: '1rem',
-                            color: '#495057'
-                        }}
+                        className="nav-button year-button"
                     >
                         &gt;&gt;
                     </button>
                     <button
                         onClick={handleTodayClick}
-                        style={{
-                            padding: '0.5rem 1rem',
-                            border: '1px solid #ced4da',
-                            borderRadius: '4px',
-                            background: isCurrentPeriod ? '#e9ecef' : 'white',
-                            cursor: 'pointer',
-                            fontSize: '1rem',
-                            color: '#495057',
-                            fontWeight: '500'
-                        }}
+                        className={`today-button ${isCurrentPeriod ? 'active' : ''}`}
                     >
                         Today
                     </button>
                     <button
                         onClick={handleViewToggle}
-                        style={{
-                            padding: '0.5rem 1rem',
-                            border: '1px solid #4a90e2',
-                            borderRadius: '4px',
-                            background: isYearlyView ? '#4a90e2' : 'white',
-                            cursor: 'pointer',
-                            fontSize: '1rem',
-                            color: isYearlyView ? 'white' : '#4a90e2',
-                            fontWeight: '500',
-                            transition: 'all 0.2s ease'
-                        }}
-                        onMouseOver={(e) => {
-                            if (!isYearlyView) {
-                                e.currentTarget.style.backgroundColor = '#f8f9fa';
-                            }
-                        }}
-                        onMouseOut={(e) => {
-                            if (!isYearlyView) {
-                                e.currentTarget.style.backgroundColor = 'white';
-                            }
-                        }}
+                        className={`toggle-button ${isYearlyView ? 'active' : ''}`}
                     >
                         {isYearlyView ? 'Monthly View' : 'Yearly View'}
                     </button>
                 </div>
             </div>
             
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '1.5rem'
-            }}>
-                <div style={{
-                    padding: '1rem',
-                    backgroundColor: '#e9ecef',
-                    borderRadius: '5px'
-                }}>
-                    <p style={{
-                        color: '#495057',
-                        fontSize: '0.9rem',
-                        marginBottom: '0.5rem',
-                        fontWeight: '500'
-                    }}>Total Income</p>
-                    <p style={{
-                        color: '#2c3e50',
-                        fontSize: '1.5rem',
-                        fontWeight: '600',
-                        margin: 0
-                    }}>${data.totalIncome.toFixed(2)}</p>
+            <div className="summary-grid">
+                <div className="summary-item">
+                    <h3>Total Income</h3>
+                    <p>${(data.totalIncome || 0).toFixed(2)}</p>
                 </div>
 
-                <div style={{
-                    padding: '1rem',
-                    backgroundColor: '#e9ecef',
-                    borderRadius: '5px'
-                }}>
-                    <p style={{
-                        color: '#495057',
-                        fontSize: '0.9rem',
-                        marginBottom: '0.5rem',
-                        fontWeight: '500'
-                    }}>Maaser Owed</p>
-                    <p style={{
-                        color: '#2c3e50',
-                        fontSize: '1.5rem',
-                        fontWeight: '600',
-                        margin: 0
-                    }}>${data.maaser.toFixed(2)}</p>
+                <div className="summary-item">
+                    <h3>Maaser Owed</h3>
+                    <p>${(data.maaser || 0).toFixed(2)}</p>
                 </div>
 
-                <div style={{
-                    padding: '1rem',
-                    backgroundColor: '#e9ecef',
-                    borderRadius: '5px'
-                }}>
-                    <p style={{
-                        color: '#495057',
-                        fontSize: '0.9rem',
-                        marginBottom: '0.5rem',
-                        fontWeight: '500'
-                    }}>Total Tzedaka Given</p>
-                    <p style={{
-                        color: '#2c3e50',
-                        fontSize: '1.5rem',
-                        fontWeight: '600',
-                        margin: 0
-                    }}>${data.totalTzedaka.toFixed(2)}</p>
+                <div className="summary-item">
+                    <h3>Net Income</h3>
+                    <p>${(data.netIncome || 0).toFixed(2)}</p>
                 </div>
 
-                <div style={{
-                    padding: '1rem',
-                    backgroundColor: '#e9ecef',
-                    borderRadius: '5px'
-                }}>
-                    <p style={{
-                        color: '#495057',
-                        fontSize: '0.9rem',
-                        marginBottom: '0.5rem',
-                        fontWeight: '500'
-                    }}>Remaining Maaser</p>
-                    <p style={{
-                        color: '#2c3e50',
-                        fontSize: '1.5rem',
-                        fontWeight: '600',
-                        margin: 0
-                    }}>${data.balance.toFixed(2)}</p>
+                <div className="summary-item">
+                    <h3>Total Tzedaka Given</h3>
+                    <p>${(data.totalTzedaka || 0).toFixed(2)}</p>
+                </div>
+
+                <div className="summary-item">
+                    <h3>Remaining Maaser</h3>
+                    <p>${(data.balance || 0).toFixed(2)}</p>
                 </div>
             </div>
         </div>

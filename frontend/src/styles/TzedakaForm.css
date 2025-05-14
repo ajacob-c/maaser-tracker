@@ -1,57 +1,65 @@
 @import './common.css';
 
-.tzedaka-form form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    margin-bottom: 0.4rem;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: 0.1rem;
-    color: #495057;
-    font-weight: 500;
-}
-
-.form-input {
+.tzedaka-form-container {
+    max-width: 500px;
     width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0 auto;
 }
 
-.error-message {
-    padding: 0.5rem;
-    background-color: #f8d7da;
-    color: #721c24;
-    border-radius: 5px;
-    margin-bottom: 0.5rem;
-    border: 1px solid #f5c6cb;
+.tzedaka-form {
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.submit-button {
-    padding: 0.5rem;
-    background-color: #007bff;
-    color: white;
+.tzedaka-form-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tzedaka-form-title {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.tzedaka-form-body {
+    padding: 1rem;
+}
+
+.tzedaka-form-footer {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.tzedaka-form-button {
+    padding: 0.5rem 1rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.9rem;
     font-weight: 500;
-    margin-top: 0.5rem;
+    transition: background-color 0.2s;
 }
 
-.submit-button:hover {
-    background-color: #0056b3;
+.tzedaka-form-button.primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.tzedaka-form-button.primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.tzedaka-form-button.secondary {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.tzedaka-form-button.secondary:hover {
+    background-color: var(--hover-bg);
 } 

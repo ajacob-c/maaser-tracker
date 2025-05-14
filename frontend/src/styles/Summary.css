@@ -1,0 +1,163 @@
+@import './common.css';
+
+.summary-container {
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-button {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--white);
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+}
+
+.nav-button:hover {
+    background-color: var(--hover-bg);
+}
+
+.year-button {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border-color: var(--secondary-color);
+}
+
+.year-button:hover {
+    background-color: var(--secondary-hover);
+    border-color: var(--secondary-hover);
+}
+
+.date-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--white);
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    height: 32px;
+}
+
+.date-display select {
+    border: none;
+    font-size: 1rem;
+    color: var(--text-muted);
+    background: var(--white);
+    cursor: pointer;
+    padding: 0 0.5rem;
+    height: 100%;
+}
+
+.date-display span {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding-left: 0.5rem;
+    border-left: 1px solid var(--border-color);
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.today-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--white);
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.today-button:hover {
+    background-color: var(--hover-bg);
+}
+
+.today-button.active {
+    background-color: var(--active-bg);
+}
+
+.view-toggle {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.toggle-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--secondary-color);
+    border-radius: 4px;
+    background: var(--white);
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--secondary-color);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-button:hover {
+    background-color: var(--hover-bg);
+}
+
+.toggle-button.active {
+    background-color: var(--secondary-color);
+    color: var(--white);
+}
+
+.summary-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.summary-item {
+    flex: 1;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-radius: 5px;
+}
+
+.summary-item h3 {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.summary-item p {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+} 

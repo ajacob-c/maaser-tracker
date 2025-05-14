@@ -33,8 +33,9 @@ router.get("/monthly/:userId", auth, async (req, res) => {
         const maaser = totalIncome * 0.1;
         const totalTzedaka = tzedaka.reduce((acc, t) => acc + t.amount, 0);
         const balance = maaser - totalTzedaka;
+        const netIncome = totalIncome - maaser;
 
-        res.json({ totalIncome, maaser, totalTzedaka, balance });
+        res.json({ totalIncome, maaser, totalTzedaka, balance, netIncome });
     }
     catch (err) {
         console.error("Summary fetch error:", err);
@@ -69,6 +70,7 @@ router.get("/yearly/:userId", auth, async (req, res) => {
         const maaser = totalIncome * 0.1;
         const totalTzedaka = tzedaka.reduce((acc, t) => acc + t.amount, 0);
         const balance = maaser - totalTzedaka;
+        const netIncome = totalIncome - maaser;
 
         // Calculate monthly breakdowns
         const monthlyBreakdown = Array(12).fill().map((_, monthIndex) => {
@@ -103,6 +105,7 @@ router.get("/yearly/:userId", auth, async (req, res) => {
             maaser,
             totalTzedaka,
             balance,
+            netIncome,
             monthlyBreakdown
         });
     }

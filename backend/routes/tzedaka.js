@@ -23,20 +23,24 @@ router.get("/user/:userId", auth, async (req, res) => {
         };
 
         if (month) {
-            // Monthly view
+            // Monthly view - use UTC dates
+            const startDate = new Date(Date.UTC(year, month - 1, 1));
+            const endDate = new Date(Date.UTC(year, month, 1));
             query.date = {
-                $gte: new Date(`${year}-${String(month).padStart(2, '0')}-01`),
-                $lt: new Date(`${year}-${String(month + 1).padStart(2, '0')}-01`)
+                $gte: startDate,
+                $lt: endDate
             };
         } else {
-            // Yearly view
+            // Yearly view - use UTC dates
+            const startDate = new Date(Date.UTC(year, 0, 1));
+            const endDate = new Date(Date.UTC(year + 1, 0, 1));
             query.date = {
-                $gte: new Date(`${year}-01-01`),
-                $lt: new Date(`${year + 1}-01-01`)
+                $gte: startDate,
+                $lt: endDate
             };
         }
 
-        const tzedaka = await Tzedaka.find(query);
+        const tzedaka = await Tzedaka.find(query).sort({ date: 1 });
         res.json(tzedaka);
     } catch (error) {
         res.status(500).json({message: "Error fetching tzedaka data"});

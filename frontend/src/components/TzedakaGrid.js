@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Grid.css";
+import { formatAmount } from "../utils/format";
 
 const TzedakaGrid = ({ selectedDate, isYearlyView }) => {
     const [tzedakas, setTzedakas] = useState([]);
@@ -23,7 +24,7 @@ const TzedakaGrid = ({ selectedDate, isYearlyView }) => {
                 }
                 
                 const response = await axios.get(endpoint, {
-                    headers: { Authorization: token }
+                    headers: { Authorization: `Bearer ${token}` }
                 });
                 
                 setTzedakas(response.data);
@@ -74,7 +75,7 @@ const TzedakaGrid = ({ selectedDate, isYearlyView }) => {
                         {monthlyTzedaka.map((monthData, index) => (
                             <tr key={index} className="yearly-row">
                                 <td>{monthData.month}</td>
-                                <td>${monthData.totalAmount.toFixed(2)}</td>
+                                <td>${formatAmount(monthData.totalAmount)}</td>
                                 <td className="details-cell">
                                     {monthData.tzedaka.length > 0 && (
                                         <table className="nested-table">
@@ -88,9 +89,9 @@ const TzedakaGrid = ({ selectedDate, isYearlyView }) => {
                                             <tbody>
                                                 {monthData.tzedaka.map((tzedaka) => (
                                                     <tr key={tzedaka._id}>
-                                                        <td>{new Date(tzedaka.date).toLocaleDateString()}</td>
+                                                        <td>{new Date(tzedaka.date).toLocaleDateString(undefined, { timeZone: 'UTC' })}</td>
                                                         <td>{tzedaka.organization}</td>
-                                                        <td>${tzedaka.amount.toFixed(2)}</td>
+                                                        <td>${formatAmount(tzedaka.amount)}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -119,9 +120,9 @@ const TzedakaGrid = ({ selectedDate, isYearlyView }) => {
                 <tbody>
                     {tzedakas.map((tzedaka) => (
                         <tr key={tzedaka._id}>
-                            <td>{new Date(tzedaka.date).toLocaleDateString()}</td>
+                            <td>{new Date(tzedaka.date).toLocaleDateString(undefined, { timeZone: 'UTC' })}</td>
                             <td>{tzedaka.organization}</td>
-                            <td>${tzedaka.amount.toFixed(2)}</td>
+                            <td>${formatAmount(tzedaka.amount)}</td>
                         </tr>
                     ))}
                 </tbody>

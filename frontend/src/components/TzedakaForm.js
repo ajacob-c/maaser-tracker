@@ -20,7 +20,7 @@ const TzedakaForm = ({ onSuccess }) => {
             userId
         }, {
             headers: {
-                Authorization: token
+                Authorization: `Bearer ${token}`
             }
         })
         .then(() => {

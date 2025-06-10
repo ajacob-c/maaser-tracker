@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Grid.css";
+import { formatAmount } from "../utils/format";
 
 const IncomeGrid = ({ selectedDate, isYearlyView }) => {
     const [incomes, setIncomes] = useState([]);
@@ -23,7 +24,7 @@ const IncomeGrid = ({ selectedDate, isYearlyView }) => {
                 }
                 
                 const response = await axios.get(endpoint, {
-                    headers: { Authorization: token }
+                    headers: { Authorization: `Bearer ${token}` }
                 });
                 
                 setIncomes(response.data);
@@ -74,7 +75,7 @@ const IncomeGrid = ({ selectedDate, isYearlyView }) => {
                         {monthlyIncomes.map((monthData, index) => (
                             <tr key={index} className="yearly-row">
                                 <td>{monthData.month}</td>
-                                <td>${monthData.totalAmount.toFixed(2)}</td>
+                                <td>${formatAmount(monthData.totalAmount)}</td>
                                 <td className="details-cell">
                                     {monthData.incomes.length > 0 && (
                                         <table className="nested-table">
@@ -88,9 +89,9 @@ const IncomeGrid = ({ selectedDate, isYearlyView }) => {
                                             <tbody>
                                                 {monthData.incomes.map((income) => (
                                                     <tr key={income._id}>
-                                                        <td>{new Date(income.date).toLocaleDateString()}</td>
+                                                        <td>{new Date(income.date).toLocaleDateString(undefined, { timeZone: 'UTC' })}</td>
                                                         <td>{income.source}</td>
-                                                        <td>${income.amount.toFixed(2)}</td>
+                                                        <td>${formatAmount(income.amount)}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -119,9 +120,9 @@ const IncomeGrid = ({ selectedDate, isYearlyView }) => {
                 <tbody>
                     {incomes.map((income) => (
                         <tr key={income._id}>
-                            <td>{new Date(income.date).toLocaleDateString()}</td>
+                            <td>{new Date(income.date).toLocaleDateString(undefined, { timeZone: 'UTC' })}</td>
                             <td>{income.source}</td>
-                            <td>${income.amount.toFixed(2)}</td>
+                            <td>${formatAmount(income.amount)}</td>
                         </tr>
                     ))}
                 </tbody>

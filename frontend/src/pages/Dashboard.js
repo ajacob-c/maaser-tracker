@@ -38,7 +38,7 @@ const Dashboard = () => {
 
         axios.get(endpoint, {
             headers: {
-                Authorization: token,
+                Authorization: `Bearer ${token}`,
             },
         })
             .then((response) => {

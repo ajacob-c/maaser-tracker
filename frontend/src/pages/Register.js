@@ -44,6 +44,7 @@ const Register = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             required
                             className="form-input"
+                            autoFocus
                         />
                     </div>
                     <div className="form-group">

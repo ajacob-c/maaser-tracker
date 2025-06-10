@@ -20,7 +20,7 @@ const IncomeForm = ({ onSuccess }) => {
             userId
         }, {
             headers: {
-                Authorization: token
+                Authorization: `Bearer ${token}`
             }
         })
         .then(() => {

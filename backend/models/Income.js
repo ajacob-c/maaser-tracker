@@ -5,6 +5,6 @@ const IncomeSchema = new mongoose.Schema({
     source: String,
     amount: {type: Number, required: true},
     date: {type: Date, required: true}
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("Income", IncomeSchema);

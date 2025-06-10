@@ -10,28 +10,36 @@ router.get("/monthly/:userId", auth, async (req, res) => {
     const year = parseInt(req.query.year) || new Date().getFullYear();
 
     try {
-        const startDate = new Date(`${year}-${String(month).padStart(2, '0')}-01`);
-        const endDate = new Date(`${year}-${String(month + 1).padStart(2, '0')}-01`);
+        // Use UTC dates for consistency
+        const startDate = new Date(Date.UTC(year, month - 1, 1));
+        const endDate = new Date(Date.UTC(year, month, 1));
+        console.log("Date range:", startDate, "to", endDate);
 
+        // Find incomes with or without timestamps, sorted by date
         const incomes = await Income.find({
             user: req.params.userId,
             date: {
                 $gte: startDate,
                 $lt: endDate
-            },
-        });
+            }
+        })
+        .sort({ date: 1 })
+        .lean();
 
+        // Find tzedaka with or without timestamps, sorted by date
         const tzedaka = await Tzedaka.find({
             user: req.params.userId,
             date: {
                 $gte: startDate,
                 $lt: endDate
-            },
-        });
-
-        const totalIncome = incomes.reduce((acc, i) => acc + i.amount, 0);
+            }
+        })
+        .sort({ date: 1 })
+        .lean();
+    
+        const totalIncome = incomes.reduce((acc, i) => acc + (i.amount || 0), 0);
         const maaser = totalIncome * 0.1;
-        const totalTzedaka = tzedaka.reduce((acc, t) => acc + t.amount, 0);
+        const totalTzedaka = tzedaka.reduce((acc, t) => acc + (t.amount || 0), 0);
         const balance = maaser - totalTzedaka;
         const netIncome = totalIncome - maaser;
 
@@ -45,37 +53,49 @@ router.get("/monthly/:userId", auth, async (req, res) => {
 
 router.get("/yearly/:userId", auth, async (req, res) => {
     const year = parseInt(req.query.year) || new Date().getFullYear();
+    console.log("Yearly summary request for user:", req.params.userId, "year:", year);
 
     try {
-        const startDate = new Date(`${year}-01-01`);
-        const endDate = new Date(`${year + 1}-01-01`);
+        // Use UTC dates for consistency
+        const startDate = new Date(Date.UTC(year, 0, 1));
+        const endDate = new Date(Date.UTC(year + 1, 0, 1));
+        console.log("Date range:", startDate, "to", endDate);
 
+        // Find incomes with or without timestamps, sorted by date
         const incomes = await Income.find({
             user: req.params.userId,
             date: {
                 $gte: startDate,
                 $lt: endDate
-            },
-        });
+            }
+        })
+        .sort({ date: 1 })
+        .lean();
 
+        // Find tzedaka with or without timestamps, sorted by date
         const tzedaka = await Tzedaka.find({
             user: req.params.userId,
             date: {
                 $gte: startDate,
                 $lt: endDate
-            },
-        });
+            }
+        })
+        .sort({ date: 1 })
+        .lean();
 
-        const totalIncome = incomes.reduce((acc, i) => acc + i.amount, 0);
+        console.log("Found incomes:", incomes.length);
+        console.log("Found tzedaka:", tzedaka.length);
+
+        const totalIncome = incomes.reduce((acc, i) => acc + (i.amount || 0), 0);
         const maaser = totalIncome * 0.1;
-        const totalTzedaka = tzedaka.reduce((acc, t) => acc + t.amount, 0);
+        const totalTzedaka = tzedaka.reduce((acc, t) => acc + (t.amount || 0), 0);
         const balance = maaser - totalTzedaka;
         const netIncome = totalIncome - maaser;
 
-        // Calculate monthly breakdowns
+        // Calculate monthly breakdowns using UTC dates
         const monthlyBreakdown = Array(12).fill().map((_, monthIndex) => {
-            const monthStart = new Date(year, monthIndex, 1);
-            const monthEnd = new Date(year, monthIndex + 1, 1);
+            const monthStart = new Date(Date.UTC(year, monthIndex, 1));
+            const monthEnd = new Date(Date.UTC(year, monthIndex + 1, 1));
             
             const monthIncomes = incomes.filter(i => {
                 const date = new Date(i.date);
@@ -87,13 +107,13 @@ router.get("/yearly/:userId", auth, async (req, res) => {
                 return date >= monthStart && date < monthEnd;
             });
 
-            const monthIncome = monthIncomes.reduce((acc, i) => acc + i.amount, 0);
+            const monthIncome = monthIncomes.reduce((acc, i) => acc + (i.amount || 0), 0);
             const monthMaaser = monthIncome * 0.1;
-            const monthTzedakaTotal = monthTzedaka.reduce((acc, t) => acc + t.amount, 0);
+            const monthTzedakaTotal = monthTzedaka.reduce((acc, t) => acc + (t.amount || 0), 0);
 
             return {
                 month: monthIndex + 1,
-                monthName: monthStart.toLocaleString('default', { month: 'long' }),
+                monthName: monthStart.toLocaleString('default', { month: 'long', timeZone: 'UTC' }),
                 income: monthIncome,
                 maaser: monthMaaser,
                 tzedaka: monthTzedakaTotal

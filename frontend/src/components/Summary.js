@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import '../styles/Summary.css';
+import { formatAmount } from "../utils/format";
 
 const Summary = ({ data, onMonthChange }) => {
     const fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
@@ -81,7 +82,7 @@ const Summary = ({ data, onMonthChange }) => {
                 </h2>
                 
                 <div className="date-navigation">
-                    <button
+                    <button 
                         onClick={() => handleYearChange(-1)}
                         className="nav-button year-button"
                     >
@@ -136,7 +137,7 @@ const Summary = ({ data, onMonthChange }) => {
                             paddingLeft: isYearlyView ? '0' : '0.5rem',
                             borderLeft: isYearlyView ? 'none' : '1px solid #ced4da'
                         }}>
-                            {year}
+                            {selectedDate.getFullYear()}
                         </span>
                     </div>
                     <button
@@ -147,7 +148,7 @@ const Summary = ({ data, onMonthChange }) => {
                     </button>
                     <button
                         onClick={handleTodayClick}
-                        className={`today-button ${isCurrentPeriod ? 'active' : ''}`}
+                        className="today-button"
                     >
                         Today
                     </button>
@@ -163,29 +164,55 @@ const Summary = ({ data, onMonthChange }) => {
             <div className="summary-grid">
                 <div className="summary-item">
                     <h3>Total Income</h3>
-                    <p>${(data.totalIncome || 0).toFixed(2)}</p>
+                    <p>${formatAmount(data.totalIncome || 0)}</p>
                 </div>
 
                 <div className="summary-item">
                     <h3>Maaser Owed</h3>
-                    <p>${(data.maaser || 0).toFixed(2)}</p>
+                    <p>${formatAmount(data.maaser || 0)}</p>
                 </div>
 
                 <div className="summary-item">
                     <h3>Net Income</h3>
-                    <p>${(data.netIncome || 0).toFixed(2)}</p>
+                    <p>${formatAmount(data.netIncome || 0)}</p>
                 </div>
 
                 <div className="summary-item">
                     <h3>Total Tzedaka Given</h3>
-                    <p>${(data.totalTzedaka || 0).toFixed(2)}</p>
+                    <p>${formatAmount(data.totalTzedaka || 0)}</p>
                 </div>
 
                 <div className="summary-item">
                     <h3>Remaining Maaser</h3>
-                    <p>${(data.balance || 0).toFixed(2)}</p>
+                    <p>${formatAmount(data.balance || 0)}</p>
                 </div>
             </div>
+
+            {isYearlyView && data.monthlyBreakdown && (
+                <div className="monthly-breakdown">
+                    <h3>Monthly Breakdown - {selectedDate.getFullYear()}</h3>
+                    <table className="breakdown-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Income</th>
+                                <th>Maaser</th>
+                                <th>Tzedaka</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.monthlyBreakdown.map((month) => (
+                                <tr key={month.month}>
+                                    <td>{month.monthName}</td>
+                                    <td>${formatAmount(month.income)}</td>
+                                    <td>${formatAmount(month.maaser)}</td>
+                                    <td>${formatAmount(month.tzedaka)}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 };

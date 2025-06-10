@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Grid.css";
+import { formatAmount } from "../utils/format";
 
 const CombinedGrid = ({ selectedDate, isYearlyView }) => {
     const [incomes, setIncomes] = useState([]);
@@ -45,18 +46,18 @@ const CombinedGrid = ({ selectedDate, isYearlyView }) => {
         const monthlyData = Array(12).fill().map((_, monthIndex) => {
             const monthIncomes = incomes.filter(income => {
                 const date = new Date(income.date);
-                return date.getMonth() === monthIndex && date.getFullYear() === selectedDate.getFullYear();
+                return date.getUTCMonth() === monthIndex && date.getUTCFullYear() === selectedDate.getFullYear();
             });
 
             const monthTzedakas = tzedakas.filter(tzedaka => {
                 const date = new Date(tzedaka.date);
-                return date.getMonth() === monthIndex && date.getFullYear() === selectedDate.getFullYear();
+                return date.getUTCMonth() === monthIndex && date.getUTCFullYear() === selectedDate.getFullYear();
             });
 
             const totalIncome = monthIncomes.reduce((sum, income) => sum + income.amount, 0);
             const totalTzedaka = monthTzedakas.reduce((sum, tzedaka) => sum + tzedaka.amount, 0);
-            const monthName = new Date(selectedDate.getFullYear(), monthIndex, 1)
-                .toLocaleString('default', { month: 'long' });
+            const monthName = new Date(Date.UTC(selectedDate.getFullYear(), monthIndex, 1))
+                .toLocaleString('default', { month: 'long', timeZone: 'UTC' });
 
             return {
                 month: monthName,
@@ -84,7 +85,7 @@ const CombinedGrid = ({ selectedDate, isYearlyView }) => {
                         {monthlyData.map((monthData, index) => (
                             <tr key={index} className="yearly-row">
                                 <td>{monthData.month}</td>
-                                <td>${monthData.totalIncome.toFixed(2)}</td>
+                                <td>${formatAmount(monthData.totalIncome)}</td>
                                 <td className="details-cell">
                                     {monthData.incomes.length > 0 && (
                                         <table className="nested-table">
@@ -98,16 +99,21 @@ const CombinedGrid = ({ selectedDate, isYearlyView }) => {
                                             <tbody>
                                                 {monthData.incomes.map((income) => (
                                                     <tr key={income._id}>
-                                                        <td>{new Date(income.date).toLocaleDateString()}</td>
+                                                        <td>{new Date(income.date).toLocaleString('default', { 
+                                                            year: 'numeric',
+                                                            month: 'numeric',
+                                                            day: 'numeric',
+                                                            timeZone: 'UTC'
+                                                        })}</td>
                                                         <td>{income.source}</td>
-                                                        <td>${income.amount.toFixed(2)}</td>
+                                                        <td>${formatAmount(income.amount)}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
                                         </table>
                                     )}
                                 </td>
-                                <td>${monthData.totalTzedaka.toFixed(2)}</td>
+                                <td>${formatAmount(monthData.totalTzedaka)}</td>
                                 <td className="details-cell">
                                     {monthData.tzedakas.length > 0 && (
                                         <table className="nested-table">
@@ -121,9 +127,14 @@ const CombinedGrid = ({ selectedDate, isYearlyView }) => {
                                             <tbody>
                                                 {monthData.tzedakas.map((tzedaka) => (
                                                     <tr key={tzedaka._id}>
-                                                        <td>{new Date(tzedaka.date).toLocaleDateString()}</td>
+                                                        <td>{new Date(tzedaka.date).toLocaleString('default', { 
+                                                            year: 'numeric',
+                                                            month: 'numeric',
+                                                            day: 'numeric',
+                                                            timeZone: 'UTC'
+                                                        })}</td>
                                                         <td>{tzedaka.organization}</td>
-                                                        <td>${tzedaka.amount.toFixed(2)}</td>
+                                                        <td>${formatAmount(tzedaka.amount)}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>

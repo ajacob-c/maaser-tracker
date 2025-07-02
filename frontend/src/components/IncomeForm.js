@@ -13,7 +13,7 @@ const IncomeForm = ({ onSuccess }) => {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
 
-        axios.post("http://localhost:5000/income/add", {
+        axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/income/add`, {
             source,
             amount: parseFloat(amount),
             date,

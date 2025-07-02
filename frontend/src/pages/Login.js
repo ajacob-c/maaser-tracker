@@ -12,7 +12,7 @@ const Login = ({ setToken }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post("http://localhost:5000/auth/login", { email, password }, {
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/auth/login`, { email, password }, {
                 headers: {
                     "Content-Type": "application/json",
                 },

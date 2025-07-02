@@ -17,17 +17,24 @@ const IncomeGrid = ({ selectedDate, isYearlyView }) => {
                 
                 let endpoint;
                 if (isYearlyView) {
-                    endpoint = `http://localhost:5000/income/user/${userId}?year=${year}`;
+                    endpoint = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/income/user/${userId}?year=${year}`;
                 } else {
                     const month = selectedDate.getMonth() + 1;
-                    endpoint = `http://localhost:5000/income/user/${userId}?month=${month}&year=${year}`;
+                    endpoint = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/income/user/${userId}?month=${month}&year=${year}`;
                 }
                 
                 const response = await axios.get(endpoint, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 
-                setIncomes(response.data);
+                // Handle new response format with status and data properties
+                const responseData = response.data;
+                if (responseData.status === 'success' && responseData.data) {
+                    setIncomes(responseData.data);
+                } else {
+                    // Fallback for old format or direct data
+                    setIncomes(responseData || []);
+                }
                 setLoading(false);
             } catch (err) {
                 setError("Failed to fetch income data");

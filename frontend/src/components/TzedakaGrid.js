@@ -17,17 +17,24 @@ const TzedakaGrid = ({ selectedDate, isYearlyView }) => {
                 
                 let endpoint;
                 if (isYearlyView) {
-                    endpoint = `http://localhost:5000/tzedaka/user/${userId}?year=${year}`;
+                    endpoint = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/tzedaka/user/${userId}?year=${year}`;
                 } else {
                     const month = selectedDate.getMonth() + 1;
-                    endpoint = `http://localhost:5000/tzedaka/user/${userId}?month=${month}&year=${year}`;
+                    endpoint = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/tzedaka/user/${userId}?month=${month}&year=${year}`;
                 }
                 
                 const response = await axios.get(endpoint, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 
-                setTzedakas(response.data);
+                // Handle new response format with status and data properties
+                const responseData = response.data;
+                if (responseData.status === 'success' && responseData.data) {
+                    setTzedakas(responseData.data);
+                } else {
+                    // Fallback for old format or direct data
+                    setTzedakas(responseData || []);
+                }
                 setLoading(false);
             } catch (err) {
                 setError("Failed to fetch tzedaka data");

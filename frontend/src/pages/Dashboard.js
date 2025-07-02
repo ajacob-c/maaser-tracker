@@ -32,9 +32,9 @@ const Dashboard = () => {
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
         
-        const endpoint = yearly 
-            ? `http://localhost:5000/summary/yearly/${userId}?year=${year}`
-            : `http://localhost:5000/summary/monthly/${userId}?month=${month}&year=${year}`;
+        const endpoint = yearly
+            ? `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/summary/yearly/${userId}?year=${year}`
+            : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/summary/monthly/${userId}?month=${month}&year=${year}`;
 
         axios.get(endpoint, {
             headers: {
@@ -42,14 +42,21 @@ const Dashboard = () => {
             },
         })
             .then((response) => {
-                setSummaryData(response.data || { 
-                    totalIncome: 0, 
-                    maaser: 0, 
-                    totalTzedaka: 0, 
-                    balance: 0,
-                    netIncome: 0,
-                    monthlyBreakdown: [] 
-                });
+                // Handle new response format with status and data properties
+                const responseData = response.data;
+                if (responseData.status === 'success' && responseData.data) {
+                    setSummaryData(responseData.data);
+                } else {
+                    // Fallback for old format or direct data
+                    setSummaryData(responseData || { 
+                        totalIncome: 0, 
+                        maaser: 0, 
+                        totalTzedaka: 0, 
+                        balance: 0,
+                        netIncome: 0,
+                        monthlyBreakdown: [] 
+                    });
+                }
                 setLoading(false);
                 setError(""); // Clear any previous errors
             })
@@ -57,7 +64,7 @@ const Dashboard = () => {
                 console.error("Error fetching summary:", error);
                 
                 // Handle token expiration specifically
-                if (error.response?.data?.code === "TOKEN_EXPIRED") {
+                if (error.response?.data?.errorCode === "TOKEN_EXPIRED") {
                     setError("Your session has expired. Please log in again.");
                     handleLogout();
                     return;

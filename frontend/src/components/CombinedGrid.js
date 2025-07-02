@@ -18,16 +18,20 @@ const CombinedGrid = ({ selectedDate, isYearlyView }) => {
                 
                 // Fetch both income and tzedaka data
                 const [incomeResponse, tzedakaResponse] = await Promise.all([
-                    axios.get(`http://localhost:5000/income/user/${userId}?year=${year}`, {
+                    axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/income/user/${userId}?year=${year}`, {
                         headers: { Authorization: token }
                     }),
-                    axios.get(`http://localhost:5000/tzedaka/user/${userId}?year=${year}`, {
+                    axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/tzedaka/user/${userId}?year=${year}`, {
                         headers: { Authorization: token }
                     })
                 ]);
                 
-                setIncomes(incomeResponse.data);
-                setTzedakas(tzedakaResponse.data);
+                // Handle new response format with status and data properties
+                const incomeData = incomeResponse.data;
+                const tzedakaData = tzedakaResponse.data;
+                
+                setIncomes(incomeData.status === 'success' && incomeData.data ? incomeData.data : (incomeData || []));
+                setTzedakas(tzedakaData.status === 'success' && tzedakaData.data ? tzedakaData.data : (tzedakaData || []));
                 setLoading(false);
             } catch (err) {
                 setError("Failed to fetch data");

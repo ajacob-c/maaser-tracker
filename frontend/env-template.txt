@@ -1,0 +1,36 @@
+# FRONTEND Environment Variables (for production)
+# Copy this to a file called .env in the frontend folder
+
+# 1. REACT_APP_API_URL - Where your backend API is hosted
+REACT_APP_API_URL=https://your-backend-domain.com
+
+# ==========================================
+# What this variable does:
+# ==========================================
+
+# REACT_APP_API_URL
+# - Tells the frontend where to send API requests
+# - Must start with https:// for production
+# - This is the URL where your backend is hosted
+
+# ==========================================
+# Important Notes:
+# ==========================================
+
+# 1. In React, environment variables must start with REACT_APP_
+# 2. The .env file must be in the frontend folder (same level as package.json)
+# 3. After changing .env, you need to restart the development server
+# 4. For production, this gets built into the app when you run "npm run build"
+
+# ==========================================
+# Example values:
+# ==========================================
+
+# If your backend is on Heroku:
+# REACT_APP_API_URL=https://your-app-name.herokuapp.com
+
+# If your backend is on Railway:
+# REACT_APP_API_URL=https://your-app-name.railway.app
+
+# If your backend is on a custom domain:
+# REACT_APP_API_URL=https://api.yourdomain.com 

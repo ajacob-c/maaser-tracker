@@ -8,6 +8,7 @@ const path = require("path");
 const logger = require("./utils/logger");
 const { errorHandler, handleDatabaseError } = require("./utils/errorHandler");
 const requestLogger = require("./middleware/requestLogger");
+const { generalLimiter, authLimiter, dataModificationLimiter } = require("./middleware/rateLimiter");
 
 // Import routes
 const authRoutes = require("./routes/auth");
@@ -31,9 +32,17 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Request logging middleware
 app.use(requestLogger);
 
-app.use("/auth", authRoutes);
-app.use("/income", incomeRoutes);
-app.use("/tzedaka", tzedakaRoutes);
+// Apply general rate limiting to all routes
+app.use(generalLimiter);
+
+// Apply stricter rate limiting to authentication routes
+app.use("/auth", authLimiter, authRoutes);
+
+// Apply data modification rate limiting to routes that modify data
+app.use("/income", dataModificationLimiter, incomeRoutes);
+app.use("/tzedaka", dataModificationLimiter, tzedakaRoutes);
+
+// Summary routes (read-only) use general rate limiting
 app.use("/summary", summaryRoutes);
 
 // Health check endpoint

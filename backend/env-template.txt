@@ -1,0 +1,46 @@
+# BACKEND Environment Variables (for production)
+# Copy this to a file called .env in the backend folder
+
+# 1. NODE_ENV - Tells the app it's running in production
+NODE_ENV=production
+
+# 2. PORT - Which port the server runs on (usually set by hosting platform)
+PORT=5000
+
+# 3. MONGO_URI - Your MongoDB connection string
+# Example: mongodb://username:password@host:port/database
+MONGO_URI=mongodb://your-username:your-password@your-host:27017/maaser-tracker
+
+# 4. JWT_SECRET - Secret key for signing JWT tokens (make this very long and random)
+JWT_SECRET=your-super-secret-jwt-key-here-make-it-long-and-random
+
+# 5. FRONTEND_URL - Where your frontend is hosted (for CORS)
+FRONTEND_URL=https://your-frontend-domain.com
+
+# ==========================================
+# What each variable does:
+# ==========================================
+
+# NODE_ENV=production
+# - Enables production mode
+# - Hides error details from users
+# - Optimizes performance
+# - Changes logging level
+
+# PORT=5000
+# - Tells the server which port to listen on
+# - Hosting platforms often set this automatically
+
+# MONGO_URI
+# - Connects to your production database
+# - Format: mongodb://username:password@host:port/database
+# - You'll get this from your database provider
+
+# JWT_SECRET
+# - Used to sign and verify authentication tokens
+# - Must be kept secret
+# - Should be long and random
+
+# FRONTEND_URL
+# - Tells the backend which frontend domain is allowed to make requests
+# - Prevents unauthorized websites from accessing your API 
